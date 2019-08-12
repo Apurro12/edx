@@ -37,17 +37,38 @@ def parabola(cantidad):
 	    
 	x_s = [item[0] for item in points]
 	y_s = [item[1] for item in points]
-	c_s = ["r" if item[2] > 0 else "b" for item in points]
+	c_s = [str(points[j][2]) for j in range(cantidad) ]
+
+	return((points,x_s,y_s,c_s))
+
+
+
+def potencia_cuarta(cantidad):
+	"""Los puntos son ternas x,y,label"""
+	points = []
+	for j in range(cantidad):
+	    aux = [random.random()*2-1,random.random()*2-1]
+	    if (-9*( aux[0]**2 ) + 16* ( aux[0] **4 ) > aux[1] ):
+	      aux.append(1)
+	    else:
+	      aux.append(-1)
+	    points.append(aux)
+	    
+	x_s = [item[0] for item in points]
+	y_s = [item[1] for item in points]
+	c_s = [str(points[j][2]) for j in range(cantidad) ]
 
 	return((points,x_s,y_s,c_s))
 
 
 
 
+
 def Perceptron_Lineal(epochs,points):
+	cantidad_de_datos = len(points)
 	th = [0,0]
 	for _ in range(epochs):
-	    for j in range(len(points)):
+	    for j in range(cantidad_de_datos):
 	        if  ( dot( th, points[j]  ) * points[j][2] <= 0 ):
 	            producto = [points[j][2] * points[j][p] for p in range(2)]
 	            th = suma_vec(th,producto)
@@ -56,20 +77,48 @@ def Perceptron_Lineal(epochs,points):
 
 
 def Perceptron_Parabolico(epochs,points):
+	cantidad_de_datos = len(points)
 	th = [0,0,0]
 	for _ in range(epochs):
-	    for j in range(len(points)):
-	        if  ( dot( th, ampliar(points[j])  ) * points[j][2] <= 0 ):
-	            producto = [points[j][2] * ampliar(points[j])[p] for p in range(3) ]
+	    for j in range(cantidad_de_datos):
+	        if  ( dot( th, ampliar_vec_parabola(points[j])  ) * points[j][2] <= 0 ):
+	            producto = [points[j][2] * ampliar_vec_parabola(points[j])[p] for p in range(3) ]
 	            th = suma_vec(th,producto)
 
 	return(th)		
 
 
-def ampliar(vec):
+def Perceptron_Cuartico(epochs,points,th_inicial=None):
+	cantidad_de_datos = len(points)
+	if th_inicial:
+		th = th_inicial
+	else:
+		th = [0,0,0,0]
+	for _ in range(epochs):
+	    for j in range(cantidad_de_datos):
+	        if  ( dot( th, ampliar_vec_cuartico(points[j])  ) * points[j][2] <= 0 ):
+	            producto = [points[j][2] * ampliar_vec_cuartico(points[j])[p] for p in range(4) ]
+	            th = suma_vec(th,producto)
+
+	return(th)
+
+
+
+
+def ampliar_vec_parabola(vec):
 	vec_aux = vec[:]
 	label = vec_aux.pop()
 	vec_aux.append(vec[0]**2)
+	vec_aux.append(label)
+	return vec_aux
+
+
+
+def ampliar_vec_cuartico(vec):
+	vec_aux = vec[:]
+	label = vec_aux.pop()
+	vec_aux.append(vec[0]**2)
+	vec_aux.append(vec[0]**4)
 	vec_aux.append(label)
 	return vec_aux
 
