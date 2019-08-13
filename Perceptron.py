@@ -15,7 +15,7 @@ y, x = np.ogrid[-1.3:1.3:100j, -1.3:1.3:100j]
 plt.scatter(x_s,y_s,c = c_s)
 plt.contour(x.ravel(), 
             y.ravel(), 
-            th[0]*x+th[1]*y+th[2]* (x**2 + y**2) + th[3] , 
+            th[0]*x+th[1]*y+ th[2] + th[3]* (x**3) + th[4]* (y**4) , 
             [0], #aca van los contornos
             colors='red',)
 plt.axis([-1.3, 1.3, -1.3, 1.3])

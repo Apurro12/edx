@@ -66,7 +66,7 @@ def circulo(cantidad):
 	points = []
 	for j in range(cantidad):
 	    aux = [random.random()*2-1,random.random()*2-1]
-	    if ( aux[0]**2  +  aux[1] **2  > 1 ):
+	    if ( aux[0]**3  +  aux[1] **4  > 0.2 ):
 	      aux.append(1)
 	    else:
 	      aux.append(-1)
@@ -92,17 +92,7 @@ def Perceptron_Lineal(epochs,points):
 
 	return(th)		
 
-
-def Perceptron_Parabolico(epochs,points):
-	cantidad_de_datos = len(points)
-	th = [0,0,0]
-	for _ in range(epochs):
-	    for j in range(cantidad_de_datos):
-	        if  ( dot( th, ampliar_vec_parabola(points[j])  ) * points[j][2] <= 0 ):
-	            producto = [points[j][2] * ampliar_vec_parabola(points[j])[p] for p in range(3) ]
-	            th = suma_vec(th,producto)
-
-	return(th)		
+		
 
 
 def Perceptron_Cuartico(epochs,points,th_inicial=None):
@@ -110,7 +100,7 @@ def Perceptron_Cuartico(epochs,points,th_inicial=None):
 	if th_inicial:
 		th = th_inicial
 	else:
-		th = [0,0,0,0]
+		th = [0,0,0,0,0]
 
 	th_len = range(len(th)  )
 
@@ -125,21 +115,14 @@ def Perceptron_Cuartico(epochs,points,th_inicial=None):
 
 
 
-def ampliar_vec_parabola(vec):
-	vec_aux = vec[:]
-	label = vec_aux.pop()
-	vec_aux.append(vec[0]**2)
-	vec_aux.append(label)
-	return vec_aux
-
-
-
 def ampliar_vec_cuartico(vec):
 	vec_aux = vec[:]
 	label = vec_aux.pop()
-	vec_aux.append(vec[0]**2 + vec[1]**2)
 	vec_aux.append(1)
+	vec_aux.append(vec[0]**3)
+	vec_aux.append(vec[1]**4)
 	vec_aux.append(label)
+
 	return vec_aux
 
 
